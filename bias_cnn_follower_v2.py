@@ -225,6 +225,21 @@ class bias_cnn:
             #print act
         return act
 
+    def restore_net(self):
+        self.sess = tf.Session()
+        self.saver.restore(self.sess, self.save_path)
+
+
+    def use_net_with_cam(self,img):
+        #需要先加载网络以及session用restore net即可
+        list_use = []
+        list_use.append(img)
+        list_use = np.asarray(list_use)
+        tf.reshape(list_use, [1,60,80,3])
+        action = self.sess.run(self.pre_action, feed_dict={self.imgs: list_use, self.keep_prob: 1})
+        # print action
+        act = np.argmax(action)
+        return act
 
 
 
